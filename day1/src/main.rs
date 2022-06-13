@@ -6,12 +6,23 @@ use std::{
 fn calculate_fuel(mut amount: i32) -> i32 {
     amount /= 3;
     amount -= 2;
-    println!("The fuel amount is {}", amount);
     amount
+}
+
+fn calculate_fuel_module(mut amount: i32) -> i32 {
+    let mut total = 0;
+    while amount > 0 {
+        amount = calculate_fuel(amount);
+        if amount > 0 {
+            total += amount;
+        }
+    }
+    total
 }
 
 fn main() {
     let mut total = 0;
+    let mut module_total = 0;
     let numbers: Vec<i32> = BufReader::new(File::open("input.txt").expect("file not found"))
         .lines() // Go through each line
         .map(|line| {
@@ -23,6 +34,8 @@ fn main() {
     let number_iterator = numbers.iter();
     for num in number_iterator {
         total += calculate_fuel(*num);
+        module_total += calculate_fuel_module(*num);
     }
-    println!("The total is {}", total)
+    println!("The total is {}", total);
+    println!("The total fuel module is {}", module_total);
 }
